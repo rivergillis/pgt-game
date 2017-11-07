@@ -6,12 +6,13 @@ import java.util.Iterator;
 
 class Model {
     private ArrayList<Sprite> sprites;
-    private boolean lastMadeRobber;
 
     Model() throws IOException {
         //Sprite sprite = new Sprite("smiley.jpg");
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
+            Ship ship = new Ship();
+            sprites.add(ship);
             //Bank bank = new Bank();
             //sprites.add(bank);
             //lastMadeRobber = false;
