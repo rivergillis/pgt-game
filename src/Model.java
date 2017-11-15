@@ -1,18 +1,20 @@
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.awt.event.KeyEvent;
+
 
 
 class Model {
     private ArrayList<Sprite> sprites;
+    private Player playerShip;
 
     Model() throws IOException {
         //Sprite sprite = new Sprite("smiley.jpg");
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
-            Ship ship = new Ship();
-            sprites.add(ship);
+            playerShip = new Player();
+            sprites.add(playerShip);
             //Bank bank = new Bank();
             //sprites.add(bank);
             //lastMadeRobber = false;
@@ -31,11 +33,26 @@ class Model {
         }*/
     }
 
+    // This method is called every time the view is repainted.
     public void update(Graphics g) {
         synchronized (this) {
             for (Sprite sprite : sprites) {
                 sprite.updateImage(g);
             }
+        }
+    }
+
+    public void movePlayer(KeyEvent e, int multiplier) {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_LEFT) {
+            playerShip.setXVel(-1 * Player.MOVESPEED_NORMAL * multiplier);
+        } else if (key == KeyEvent.VK_RIGHT) {
+            playerShip.setXVel(Player.MOVESPEED_NORMAL * multiplier);
+        } else if (key == KeyEvent.VK_UP) {
+            playerShip.setYVel(-1 * Player.MOVESPEED_NORMAL * multiplier);
+        } else if (key == KeyEvent.VK_DOWN) {
+            playerShip.setYVel(Player.MOVESPEED_NORMAL * multiplier);
         }
     }
 
@@ -57,7 +74,11 @@ class Model {
         }*/
     }
 
-    public void updateScene(int width, int height) {
+    // This method is called every frame and should updateState() for every sprite
+    public synchronized void updateScene(int width, int height) {
+        for (Sprite sprite : sprites) {
+            sprite.updateState(width, height);
+        }
         /*synchronized (this) {
             for (Sprite sprite : sprites) {
                 sprite.updateState(width, height);

@@ -15,8 +15,13 @@ class Controller implements MouseListener, KeyListener
     Controller() throws IOException, Exception {
         model = new Model();
         view = new View(this);
+
+        System.out.println("Starting background updater thread");
+        Thread t = new Thread(new SpriteMover(model, view));
+        t.start();
     }
 
+    // This method is called every time the view is repainted
     public void update(Graphics g) {
         model.update(g);
     }
@@ -45,6 +50,10 @@ class Controller implements MouseListener, KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (Player.isActionKey(e)) {
+            model.movePlayer(e, 1);
+        }
+
         int key = e.getKeyCode();
         if (key == KeyEvent.VK_H) {
             System.out.println("hello world");
@@ -53,15 +62,15 @@ class Controller implements MouseListener, KeyListener
         } else if (key == KeyEvent.VK_R) {
             model.initialize();
             view.repaint();
-        } else if (key == KeyEvent.VK_S) {
-            System.out.println("Starting new thread");
-            Thread t = new Thread(new SpriteMover(model, view));
-            t.start();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        int key = e.getKeyCode();
+        if (Player.isActionKey(e)) {
+            model.movePlayer(e, 0);
+        }
     }
 
     @Override

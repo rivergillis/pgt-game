@@ -32,20 +32,30 @@ class Sprite
     }
     public Image getImage() { return image; }
 
+    public int getHeight() {
+        return getImage().getHeight(null);
+    }
+
+    public int getWidth() {
+        return getImage().getWidth(null);
+    }
+
+    // Called every time the view is repainted, really no reason to override this
     public void updateImage(Graphics g) {
-        g.drawImage(getImage(), getX(), getY(), 60, 60, null);
+        Image i = getImage();
+        g.drawImage(i, getX(), getY(), getWidth(), getHeight(), null);
     }
 
     public Boolean overlaps(Sprite s) {
         int leftA = this.getX();
-        int rightA = this.getX() + 60;
+        int rightA = this.getX() + this.getWidth();
         int topA = this.getY();
-        int bottomA = this.getY() + 60;
+        int bottomA = this.getY() + this.getHeight();
 
         int leftB = s.getX();
-        int rightB = s.getX() + 60;
+        int rightB = s.getX() + s.getWidth();
         int topB = s.getY();
-        int bottomB = s.getY() + 60;
+        int bottomB = s.getY() + s.getHeight();
 
         // check if sides of a are outside of b
         if (bottomA <= topB) {
@@ -67,5 +77,6 @@ class Sprite
         return true;
     }
 
+    // Called every frame, override this to implement the frame-by-frame logic of the object
     public void updateState(int width, int height) {}
 }
