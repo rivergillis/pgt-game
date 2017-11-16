@@ -1,4 +1,5 @@
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
 
 public class Player extends GameObject {
     public static final int PLAYER_UP       = KeyEvent.VK_UP;
@@ -10,6 +11,17 @@ public class Player extends GameObject {
 
     public static final int MOVESPEED_NORMAL = 5;
     public static final int MOVESPEED_FOCUS = 3;
+
+    private HashMap<Integer, Boolean> wasLastPressed;
+
+    Player() {
+        super();
+        wasLastPressed = new HashMap<Integer, Boolean>();
+        wasLastPressed.put(PLAYER_UP, false);
+        wasLastPressed.put(PLAYER_DOWN, false);
+        wasLastPressed.put(PLAYER_LEFT, false);
+        wasLastPressed.put(PLAYER_RIGHT, false);
+    }
 
     public static boolean isActionKey(KeyEvent e) {
         int k = e.getKeyCode();
@@ -28,5 +40,32 @@ public class Player extends GameObject {
         } else {
             return false;
         }
+    }
+
+    public void setMovement(KeyEvent e, boolean isPress) {
+        int k = e.getKeyCode();
+        int newXVel = super.getXVel();
+        int newYVel = super.getYVel();
+
+        int changeAmount = isPress ? MOVESPEED_NORMAL : -1 * MOVESPEED_NORMAL;
+
+        // don't keep adding if the key is held
+        if (wasLastPressed.get(k) && isPress) { return; }
+
+        wasLastPressed.put(k, isPress);
+
+
+        if (k == Player.PLAYER_LEFT) {
+            newXVel -= changeAmount;
+        } else if (k == Player.PLAYER_RIGHT) {
+            newXVel += changeAmount;
+        } else if (k == Player.PLAYER_UP) {
+            newYVel -= changeAmount;
+        } else if (k == Player.PLAYER_DOWN) {
+            newYVel += changeAmount;
+        }
+
+        this.setXVel(newXVel);
+        this.setYVel(newYVel);
     }
 }

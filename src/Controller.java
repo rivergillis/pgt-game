@@ -51,7 +51,7 @@ class Controller implements MouseListener, KeyListener
     @Override
     public void keyPressed(KeyEvent e) {
         if (Player.isActionKey(e)) {
-            model.movePlayer(e, 1);
+            model.movePlayer(e, true);
         }
 
         int key = e.getKeyCode();
@@ -69,7 +69,7 @@ class Controller implements MouseListener, KeyListener
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         if (Player.isActionKey(e)) {
-            model.movePlayer(e, 0);
+            model.movePlayer(e, false);
         }
     }
 

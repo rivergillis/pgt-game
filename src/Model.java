@@ -42,18 +42,8 @@ class Model {
         }
     }
 
-    public void movePlayer(KeyEvent e, int multiplier) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-            playerShip.setXVel(-1 * Player.MOVESPEED_NORMAL * multiplier);
-        } else if (key == KeyEvent.VK_RIGHT) {
-            playerShip.setXVel(Player.MOVESPEED_NORMAL * multiplier);
-        } else if (key == KeyEvent.VK_UP) {
-            playerShip.setYVel(-1 * Player.MOVESPEED_NORMAL * multiplier);
-        } else if (key == KeyEvent.VK_DOWN) {
-            playerShip.setYVel(Player.MOVESPEED_NORMAL * multiplier);
-        }
+    public void movePlayer(KeyEvent e, boolean isPress) {
+        playerShip.setMovement(e, isPress);
     }
 
     public void makeSprite(int x, int y) {
