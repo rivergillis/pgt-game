@@ -6,6 +6,9 @@ public class GameObject extends Sprite {
     private int xVel = 0;
     private int yVel = 0;
 
+    // The velocity multiplier is applied to the movement on updateState
+    private double velocityMultiplier = 0.0;
+
     public GameObject() {
         super("assets/64-placeholder.png");
     }
@@ -16,6 +19,10 @@ public class GameObject extends Sprite {
 
     public int getYVel() {
         return this.yVel;
+    }
+
+    public void setVelocityMultiplier(double mult) {
+        this.velocityMultiplier = mult;
     }
 
     public void setXVel(int dx) {
@@ -34,7 +41,7 @@ public class GameObject extends Sprite {
 
     @Override
     public void updateState(int width, int height) {
-        super.setX(super.getX() + this.getXVel());
-        super.setY(super.getY() + this.getYVel());
+        super.setX(super.getX() + (int)(this.getXVel() * this.velocityMultiplier));
+        super.setY(super.getY() + (int)(this.getYVel() * this.velocityMultiplier));
     }
 }

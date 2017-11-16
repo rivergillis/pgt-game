@@ -12,7 +12,10 @@ public class Player extends GameObject {
     public static final int MOVESPEED_NORMAL = 5;
     public static final int MOVESPEED_FOCUS = 3;
 
+    // another name: isHeld
+    // idea: make this ternary (0, focused, normal)
     private HashMap<Integer, Boolean> wasLastPressed;
+
 
     Player() {
         super();
@@ -21,6 +24,7 @@ public class Player extends GameObject {
         wasLastPressed.put(PLAYER_DOWN, false);
         wasLastPressed.put(PLAYER_LEFT, false);
         wasLastPressed.put(PLAYER_RIGHT, false);
+        wasLastPressed.put(PLAYER_FOCUS, false);
     }
 
     public static boolean isActionKey(KeyEvent e) {
@@ -42,15 +46,19 @@ public class Player extends GameObject {
         }
     }
 
+    public boolean isFocus() {
+        return wasLastPressed.get(PLAYER_FOCUS);
+    }
+
     public void setMovement(KeyEvent e, boolean isPress) {
         int k = e.getKeyCode();
         int newXVel = super.getXVel();
         int newYVel = super.getYVel();
 
-        int changeAmount = isPress ? MOVESPEED_NORMAL : -1 * MOVESPEED_NORMAL;
+        int changeAmount = isPress ? 1 : -1;
 
         // don't keep adding if the key is held
-        if (wasLastPressed.get(k) && isPress) { return; }
+        if (k != PLAYER_FOCUS && wasLastPressed.get(k) && isPress) { return; }
 
         wasLastPressed.put(k, isPress);
 
@@ -67,5 +75,15 @@ public class Player extends GameObject {
 
         this.setXVel(newXVel);
         this.setYVel(newYVel);
+    }
+
+    @Override
+    public void updateState(int width, int height) {
+        if (isFocus()) {
+            super.setVelocityMultiplier(MOVESPEED_FOCUS);
+        } else {
+            super.setVelocityMultiplier(MOVESPEED_NORMAL);
+        }
+        super.updateState(width, height);
     }
 }
