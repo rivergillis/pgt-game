@@ -27,7 +27,7 @@ class Sprite
         try {
             image = ImageIO.read(new File(imagePath));
         } catch (IOException ioe) {
-            System.out.println("Unable to load image file.");
+            System.out.println("Unable to load image file." + ioe.getMessage());
         }
     }
     public Image getImage() { return image; }

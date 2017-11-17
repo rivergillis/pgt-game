@@ -58,7 +58,7 @@ public class Player extends GameObject {
         int changeAmount = isPress ? 1 : -1;
 
         // don't keep adding if the key is held
-        if (k != PLAYER_FOCUS && wasLastPressed.get(k) && isPress) { return; }
+        if (wasLastPressed.get(k) && isPress) { return; }
 
         wasLastPressed.put(k, isPress);
 
@@ -71,6 +71,12 @@ public class Player extends GameObject {
             newYVel -= changeAmount;
         } else if (k == Player.PLAYER_DOWN) {
             newYVel += changeAmount;
+        } else if (k == Player.PLAYER_FOCUS) {
+            if (isPress) {
+                super.setImage("assets/64-placeholder-heart.png");
+            } else {
+                super.setImage("assets/64-placeholder.png");
+            }
         }
 
         this.setXVel(newXVel);
@@ -84,6 +90,8 @@ public class Player extends GameObject {
         } else {
             super.setVelocityMultiplier(MOVESPEED_NORMAL);
         }
+
         super.updateState(width, height);
+        super.moveInBounds(width, height);
     }
 }

@@ -43,7 +43,7 @@ class Controller implements MouseListener, KeyListener
             model.makeSprite(e.getX(), e.getY());
         } else {
             // right click
-            model.updateScene(view.getWidth(), view.getHeight());
+            model.updateScene(view.getContentPane().getWidth(), view.getContentPane().getHeight());
         }
         view.repaint();
     }

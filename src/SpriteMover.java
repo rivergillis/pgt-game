@@ -16,7 +16,7 @@ public class SpriteMover implements Runnable {
         //System.out.println("Perfect frame time: " + perfectFrameTime);
         while (true) {
             startTime = System.nanoTime();
-            model.updateScene(view.getWidth(), view.getHeight());
+            model.updateScene(view.getContentPane().getWidth(), view.getContentPane().getHeight());
             view.repaint();
             elapsedTime = (System.nanoTime() - startTime) / 1000000.0;
             //System.out.println("Elapsed time for this update: " + elapsedTime);
