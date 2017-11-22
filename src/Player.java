@@ -15,7 +15,7 @@ public class Player extends GameObject {
 
     // Bullets spawned every BULLET_FRAME frames
     // Game runs at about 62 frames per second
-    public static final long BULLET_FRAME = 31;
+    public static final long BULLET_FRAME = 20;
 
     // another name: isHeld
     // idea: make this ternary (0, focused, normal)
@@ -95,9 +95,13 @@ public class Player extends GameObject {
     }
 
     public void spawnBullets() {
-        System.out.println("Spawn bullets!");
-        Bullet b = new Bullet(20, 20, 30);
-        bullets.add(b);
+        //System.out.println("Spawn bullets!");
+        Bullet b1 = new Bullet(360-105, super.getX(), super.getY());
+        Bullet b3 = new Bullet(360-90, super.getX() + (super.getHeight() / 2), super.getY() - 10);
+        Bullet b2 = new Bullet(360-75, super.getX() + super.getWidth(), super.getY());
+        bullets.add(b1);
+        bullets.add(b2);
+        bullets.add(b3);
     }
 
     @Override
