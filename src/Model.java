@@ -8,16 +8,22 @@ import java.util.Iterator;
 class Model {
     private ArrayList<Sprite> sprites;
     private ArrayList<Bullet> playerBullets;
+
+    private ArrayList<Enemy> enemies;
     private ArrayList<Bullet> enemyBullets;
     private Player playerShip;
+
+    private EnemySpawner spawner;
 
     Model() throws IOException {
         //Sprite sprite = new Sprite("smiley.jpg");
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
             playerBullets = new ArrayList<Bullet>();
+            enemies = new ArrayList<Enemy>();
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
+            spawner = new EnemySpawner(enemies);
             //Bank bank = new Bank();
             //sprites.add(bank);
             //lastMadeRobber = false;
@@ -44,6 +50,9 @@ class Model {
             }
             for (Sprite bullet : playerBullets) {
                 bullet.updateImage(g);
+            }
+            for (Enemy e: enemies) {
+                e.updateImage(g);
             }
         }
     }
@@ -83,6 +92,28 @@ class Model {
                 i.remove();
             }
         }
+        Iterator<Enemy> iE = enemies.iterator();
+        while (iE.hasNext()) {
+            Enemy enemy = iE.next();
+            enemy.updateState(width, height, frameNum);
+            if (enemy.getY() > (height + 20)) {
+                iE.remove();
+            } else {
+                // check collisions with every bullet
+                Iterator<Bullet> iB = playerBullets.iterator();
+                while (iB.hasNext()) {
+                    Bullet b = iB.next();
+                    if (b.overlaps(enemy)) {
+                        enemy.hit();
+                        iB.remove();
+                        if (enemy.isDead()) {
+                            iE.remove();
+                        }
+                    }
+                }
+            }
+        }
+        spawner.update(width, frameNum);
         /*synchronized (this) {
             for (Sprite sprite : sprites) {
                 sprite.updateState(width, height);
