@@ -12,13 +12,17 @@ public class Player extends GameObject {
     public static final int MOVESPEED_NORMAL = 5;
     public static final int MOVESPEED_FOCUS = 3;
 
+    // Bullets spawned every BULLET_FRAME frames
+    // Game runs at about 62 frames per second
+    public static final long BULLET_FRAME = 31;
+
     // another name: isHeld
     // idea: make this ternary (0, focused, normal)
     private HashMap<Integer, Boolean> wasLastPressed;
 
 
     Player() {
-        super();
+        super("assets/64-placeholder.png");
         wasLastPressed = new HashMap<Integer, Boolean>();
         wasLastPressed.put(PLAYER_UP, false);
         wasLastPressed.put(PLAYER_DOWN, false);
@@ -83,15 +87,23 @@ public class Player extends GameObject {
         this.setYVel(newYVel);
     }
 
+    public static void spawnBullets() {
+        System.out.println("Spawn bullets!");
+    }
+
     @Override
-    public void updateState(int width, int height) {
+    public void updateState(int width, int height, long frameNum) {
+        if (frameNum % BULLET_FRAME == 0) {
+            spawnBullets();
+        }
+
         if (isFocus()) {
             super.setVelocityMultiplier(MOVESPEED_FOCUS);
         } else {
             super.setVelocityMultiplier(MOVESPEED_NORMAL);
         }
 
-        super.updateState(width, height);
+        super.updateState(width, height, frameNum);
         super.moveInBounds(width, height);
     }
 }

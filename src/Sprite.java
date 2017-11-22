@@ -78,5 +78,5 @@ class Sprite
     }
 
     // Called every frame, override this to implement the frame-by-frame logic of the object
-    public void updateState(int width, int height) {}
+    public void updateState(int width, int height, long frameNum) {}
 }

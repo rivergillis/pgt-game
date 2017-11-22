@@ -7,6 +7,8 @@ import java.awt.event.KeyEvent;
 
 class Model {
     private ArrayList<Sprite> sprites;
+    private ArrayList<Bullet> playerBullets;
+    private ArrayList<Bullet> enemyBullets;
     private Player playerShip;
 
     Model() throws IOException {
@@ -65,9 +67,9 @@ class Model {
     }
 
     // This method is called every frame and should updateState() for every sprite
-    public synchronized void updateScene(int width, int height) {
+    public synchronized void updateScene(int width, int height, long frameNum) {
         for (Sprite sprite : sprites) {
-            sprite.updateState(width, height);
+            sprite.updateState(width, height, frameNum);
         }
         /*synchronized (this) {
             for (Sprite sprite : sprites) {
