@@ -46,6 +46,16 @@ class Sprite
         g.drawImage(i, getX(), getY(), getWidth(), getHeight(), null);
     }
 
+    public boolean exitedScreen(int width, int height, int buffer) {
+        if (locationX < (0 - buffer) || locationX + getWidth() > (width + buffer)) {
+            return true;
+        } else if (locationY < (0 - buffer) || locationY + getHeight() > (height + buffer)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public Boolean overlaps(Sprite s) {
         int leftA = this.getX();
         int rightA = this.getX() + this.getWidth();

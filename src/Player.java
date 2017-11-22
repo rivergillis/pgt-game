@@ -1,4 +1,5 @@
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player extends GameObject {
@@ -20,8 +21,11 @@ public class Player extends GameObject {
     // idea: make this ternary (0, focused, normal)
     private HashMap<Integer, Boolean> wasLastPressed;
 
+    // List of all Bullets we make
+    private ArrayList<Bullet> bullets;
 
-    Player() {
+
+    Player(ArrayList<Bullet> playerBullets) {
         super("assets/64-placeholder.png");
         wasLastPressed = new HashMap<Integer, Boolean>();
         wasLastPressed.put(PLAYER_UP, false);
@@ -29,6 +33,9 @@ public class Player extends GameObject {
         wasLastPressed.put(PLAYER_LEFT, false);
         wasLastPressed.put(PLAYER_RIGHT, false);
         wasLastPressed.put(PLAYER_FOCUS, false);
+        this.bullets = playerBullets;
+        super.setX(200 - 32);
+        super.setY(650);
     }
 
     public static boolean isActionKey(KeyEvent e) {
@@ -87,8 +94,10 @@ public class Player extends GameObject {
         this.setYVel(newYVel);
     }
 
-    public static void spawnBullets() {
+    public void spawnBullets() {
         System.out.println("Spawn bullets!");
+        Bullet b = new Bullet(20, 20, 30);
+        bullets.add(b);
     }
 
     @Override

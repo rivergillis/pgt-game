@@ -2,7 +2,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.event.KeyEvent;
-
+import java.util.Iterator;
 
 
 class Model {
@@ -15,7 +15,8 @@ class Model {
         //Sprite sprite = new Sprite("smiley.jpg");
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
-            playerShip = new Player();
+            playerBullets = new ArrayList<Bullet>();
+            playerShip = new Player(playerBullets);
             sprites.add(playerShip);
             //Bank bank = new Bank();
             //sprites.add(bank);
@@ -40,6 +41,9 @@ class Model {
         synchronized (this) {
             for (Sprite sprite : sprites) {
                 sprite.updateImage(g);
+            }
+            for (Sprite bullet : playerBullets) {
+                bullet.updateImage(g);
             }
         }
     }
@@ -70,6 +74,14 @@ class Model {
     public synchronized void updateScene(int width, int height, long frameNum) {
         for (Sprite sprite : sprites) {
             sprite.updateState(width, height, frameNum);
+        }
+        Iterator<Bullet> i = playerBullets.iterator();
+        while (i.hasNext()) {
+            Bullet b = i.next();
+            b.updateState(width, height, frameNum);
+            if (b.exitedScreen(width, height, 20)) {
+                i.remove();
+            }
         }
         /*synchronized (this) {
             for (Sprite sprite : sprites) {

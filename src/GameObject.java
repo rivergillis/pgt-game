@@ -7,7 +7,7 @@ public class GameObject extends Sprite {
     private int yVel = 0;
 
     // The velocity multiplier is applied to the movement on updateState
-    private double velocityMultiplier = 0.0;
+    private double velocityMultiplier = 1.0;
 
     public GameObject(String jpgName) {
         super(jpgName);
@@ -27,7 +27,6 @@ public class GameObject extends Sprite {
 
     public void setXVel(int dx) {
         this.xVel = dx;
-        System.out.println("Set ship's x velocity to " + this.xVel);
     }
 
     public void setYVel(int dy) {
