@@ -6,6 +6,8 @@ public class Enemy extends GameObject {
     public static final int PLAYER_BULLET_DAMAGE = 20;
     public static final int MAX_HP = 180;
 
+    public static final int ENEMY_POINTS = 100;
+
     // Bullets spawned every BULLET_FRAME frames
     // Game runs at about 62 frames per second
     public static final long BULLET_FRAME = 62;

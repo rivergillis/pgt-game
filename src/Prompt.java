@@ -26,4 +26,8 @@ public class Prompt extends Sprite {
         }
         return false;
     }
+
+    public void unRemove() {
+        this.hasRemoved = false;
+    }
 }

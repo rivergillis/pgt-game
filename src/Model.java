@@ -18,6 +18,8 @@ class Model {
     private Prompt instructions;
     private Prompt deathPrompt;
 
+    private int points = 0;
+
     Model() throws IOException {
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
@@ -63,6 +65,10 @@ class Model {
             if (this.instructions.remove(e)) {
                 sprites.remove(instructions);
             }
+        } else if (!this.deathPrompt.isRemoved()) {
+            if (this.deathPrompt.remove(e)) {
+                sprites.remove(deathPrompt);
+            }
         } else {
             playerShip.setMovement(e, isPress);
         }
@@ -74,6 +80,10 @@ class Model {
         playerBullets.clear();
         deadEnemyBullets.clear();
         enemies.clear();
+        System.out.println("Died with " + points + " points");
+        this.points = 0;
+        deathPrompt.unRemove();
+        sprites.add(deathPrompt);
     }
 
     public boolean shouldRemoveEnemy(Enemy enemy, int height) {
@@ -88,6 +98,7 @@ class Model {
                 enemy.hit();
                 iB.remove();
                 if (enemy.isDead()) {
+                    points += Enemy.ENEMY_POINTS;
                     return true;
                 }
             }
@@ -120,6 +131,7 @@ class Model {
     // This method is called every frame and should updateState() for every sprite
     public synchronized void updateScene(int width, int height, long frameNum) {
         if (!this.instructions.isRemoved()) { return; }
+        if (!this.deathPrompt.isRemoved()) { return; }
         for (Sprite sprite : sprites) {
             sprite.updateState(width, height, frameNum);
         }
