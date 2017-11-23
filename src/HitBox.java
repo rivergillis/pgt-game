@@ -23,4 +23,9 @@ public class HitBox {
     public int getHeight() {
         return height;
     }
+
+    @Override
+    public String toString() {
+        return "HitBox: x: " + x + " y: " + y + " width: " + width + " height: " + height;
+    }
 }

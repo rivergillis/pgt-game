@@ -37,16 +37,7 @@ class Controller implements MouseListener, KeyListener
     public void mouseReleased(MouseEvent e) {    }
     public void mouseEntered(MouseEvent e) {    }
     public void mouseExited(MouseEvent e) {    }
-    public void mouseClicked(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            // left click
-            model.makeSprite(e.getX(), e.getY());
-        } else {
-            // right click
-            //model.updateScene(view.getContentPane().getWidth(), view.getContentPane().getHeight());
-        }
-        view.repaint();
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {

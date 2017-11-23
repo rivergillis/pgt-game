@@ -58,7 +58,8 @@ public class Player extends GameObject {
     }
 
     public HitBox getHeart() {
-        return new HitBox(0,0,0,0);
+        HitBox h = new HitBox((this.getX() + 28), this.getY() + 28,8,8);
+        return h;
     }
 
     public boolean isFocus() {
@@ -101,7 +102,7 @@ public class Player extends GameObject {
     public void spawnBullets() {
         //System.out.println("Spawn bullets!");
         Bullet b1 = new Bullet(360-105, super.getX(), super.getY(), false);
-        Bullet b3 = new Bullet(360-90, super.getX() + (super.getHeight() / 2), super.getY() - 10, false);
+        Bullet b3 = new Bullet(360-90, super.getX() + (super.getWidth() / 2), super.getY() - 10, false);
         Bullet b2 = new Bullet(360-75, super.getX() + super.getWidth(), super.getY(), false);
         bullets.add(b1);
         bullets.add(b2);

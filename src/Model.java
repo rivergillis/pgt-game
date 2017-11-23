@@ -16,7 +16,6 @@ class Model {
     private EnemySpawner spawner;
 
     Model() throws IOException {
-        //Sprite sprite = new Sprite("smiley.jpg");
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
             playerBullets = new ArrayList<Bullet>();
@@ -25,22 +24,11 @@ class Model {
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
-            //Bank bank = new Bank();
-            //sprites.add(bank);
-            //lastMadeRobber = false;
         }
     }
 
 
     public void initialize() {
-        /*synchronized (this) {
-            sprites = new ArrayList<Sprite>();
-            Bank bank = new Bank();
-            sprites.add(bank);
-            lastMadeRobber = false;
-            RobberCar.numEscaped = 0;
-            RobberCar.numCaptured = 0;
-        }*/
     }
 
     // This method is called every time the view is repainted.
@@ -68,22 +56,12 @@ class Model {
         playerShip.setMovement(e, isPress);
     }
 
-    public void makeSprite(int x, int y) {
-        /*synchronized (this) {
-            Car sprite;
-            if (lastMadeRobber) {
-                sprite = new CopCar();
-                lastMadeRobber = false;
-                sprite.setX(x);
-                sprite.setY(y);
-            } else {
-                sprite = new RobberCar();
-                lastMadeRobber = true;
-                sprite.setX(300);
-                sprite.setY(300);
-            }
-            sprites.add(sprite);
-        }*/
+    public void killPlayerAndReset() {
+        sprites.clear();
+        sprites.add(playerShip);
+        playerBullets.clear();
+        deadEnemyBullets.clear();
+        enemies.clear();
     }
 
     public boolean shouldRemoveEnemy(Enemy enemy, int height) {
@@ -120,8 +98,7 @@ class Model {
                 i.remove();
             } else if (enemyBullets) {
                 if (b.overlaps(playerShip.getHeart())) {
-                    System.out.println("Player died");
-                    //return true;
+                    return true;
                 }
             }
         }
@@ -139,47 +116,20 @@ class Model {
         while (iE.hasNext()) {
             Enemy enemy = iE.next();
             enemy.updateState(width, height, frameNum);
-            updateBullets(enemy.getBullets(), true, width, height, frameNum);
+            if (updateBullets(enemy.getBullets(), true, width, height, frameNum)) {
+                killPlayerAndReset();
+                return;
+            }
 
             if (shouldRemoveEnemy(enemy, height)) {
                 adoptBulletsFromDeadEnemy(enemy);
                 iE.remove();
             }
         }
-        updateBullets(deadEnemyBullets, true, width, height, frameNum);
+        if (updateBullets(deadEnemyBullets, true, width, height, frameNum)) {
+            killPlayerAndReset();
+            return;
+        }
         spawner.update(width, frameNum);
-        /*synchronized (this) {
-            for (Sprite sprite : sprites) {
-                sprite.updateState(width, height);
-            }
-            for (Sprite sprite : sprites) {
-                // check only CopCars
-                if (!CopCar.class.isInstance(sprite)) {
-                    continue;
-                }
-                for (Sprite other : sprites) {
-                    // check only RobberCars
-                    if (!RobberCar.class.isInstance(other)) {
-                        continue;
-                    }
-                    if (sprite.overlaps(other)) {
-                        RobberCar robber = (RobberCar) other;
-                        robber.captured();
-                    }
-                }
-            }
-            Iterator<Sprite> i = sprites.iterator();
-            while (i.hasNext()) {
-                Sprite sprite = i.next();
-                if (!RobberCar.class.isInstance(sprite)) {
-                    continue;
-                }
-                RobberCar robber = (RobberCar) sprite;
-                if (robber.hasEscaped()) {
-                    System.out.println("I'm free!");
-                    i.remove();
-                }
-            }
-        } */
     }
 }

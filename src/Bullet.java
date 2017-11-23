@@ -8,14 +8,17 @@ import java.awt.image.BufferedImage;
 public class Bullet extends GameObject {
 
     private static final int BULLET_SPEED = 5;
+    private static final int BULLET_SPEED_SLOW = 3;
 
     private int angle;
+    private boolean enemy;
 
     public Bullet(int angle, int x, int y, boolean enemy) {
         super("assets/16x32-placeholder-red.png");
         if (!enemy) {
             super.setImage("assets/16x32-placeholder.png");
         }
+        this.enemy = enemy;
         this.setAngle(angle);
         super.setX(x);
         super.setY(y);
@@ -24,13 +27,20 @@ public class Bullet extends GameObject {
     public void setAngle(int angle) {
         this.angle = angle;
         double radAngle = Math.toRadians(angle);
+        int bulletSpeed = 0;
+
+        if (this.enemy) {
+            bulletSpeed = BULLET_SPEED_SLOW;
+        } else {
+            bulletSpeed = BULLET_SPEED;
+        }
         /*System.out.print("cos of " + angle + " " + Math.toRadians(Math.cos(angle)));
         System.out.println(" rounded")
         System.out.println("xvel: " + BULLET_SPEED * Math.cos(angle));
         System.out.print("Rounded: " + Math.round(BULLET_SPEED * Math.cos(angle)));
         System.out.println(" Int'd: " + (int)Math.round(BULLET_SPEED * Math.cos(angle)));*/
-        super.setXVel((int)Math.round(BULLET_SPEED * Math.cos(radAngle)));
-        super.setYVel((int)Math.round(BULLET_SPEED * Math.sin(radAngle)));
+        super.setXVel((int)Math.round(bulletSpeed * Math.cos(radAngle)));
+        super.setYVel((int)Math.round(bulletSpeed * Math.sin(radAngle)));
     }
 
     @Override

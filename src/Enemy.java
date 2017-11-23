@@ -8,7 +8,7 @@ public class Enemy extends GameObject {
 
     // Bullets spawned every BULLET_FRAME frames
     // Game runs at about 62 frames per second
-    public static final long BULLET_FRAME = 20;
+    public static final long BULLET_FRAME = 62;
 
     private ArrayList<Bullet> bullets;
 
@@ -34,9 +34,9 @@ public class Enemy extends GameObject {
     }
 
     public void spawnBullets() {
-        Bullet b1 = new Bullet(360-105, super.getX(), super.getY(), true);
-        Bullet b3 = new Bullet(360-90, super.getX() + (super.getHeight() / 2), super.getY() - 10, true);
-        Bullet b2 = new Bullet(360-75, super.getX() + super.getWidth(), super.getY(), true);
+        Bullet b1 = new Bullet(105, super.getX(), super.getY() + super.getHeight(), true);
+        Bullet b3 = new Bullet(90, super.getX() + (super.getWidth() / 2), (super.getY()) + super.getHeight(), true);
+        Bullet b2 = new Bullet(75, super.getX() + super.getWidth(), super.getY() + super.getHeight(), true);
         bullets.add(b1);
         bullets.add(b2);
         bullets.add(b3);
