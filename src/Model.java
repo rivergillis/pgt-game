@@ -8,9 +8,9 @@ import java.util.Iterator;
 class Model {
     private ArrayList<Sprite> sprites;
     private ArrayList<Bullet> playerBullets;
+    private ArrayList<Bullet> deadEnemyBullets;
 
     private ArrayList<Enemy> enemies;
-    private ArrayList<Bullet> enemyBullets;
     private Player playerShip;
 
     private EnemySpawner spawner;
@@ -21,6 +21,7 @@ class Model {
             sprites = new ArrayList<Sprite>();
             playerBullets = new ArrayList<Bullet>();
             enemies = new ArrayList<Enemy>();
+            deadEnemyBullets = new ArrayList<Bullet>();
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
@@ -53,6 +54,12 @@ class Model {
             }
             for (Enemy e: enemies) {
                 e.updateImage(g);
+                for (Sprite bullet : e.getBullets()) {
+                    bullet.updateImage(g);
+                }
+            }
+            for (Sprite bullet : deadEnemyBullets) {
+                bullet.updateImage(g);
             }
         }
     }
@@ -98,6 +105,11 @@ class Model {
         return false;
     }
 
+    private void adoptBulletsFromDeadEnemy(Enemy enemy) {
+        ArrayList<Bullet> enemyBullets = enemy.getBullets();
+        deadEnemyBullets.addAll(enemyBullets);
+    }
+
     // This method is called every frame and should updateState() for every sprite
     public synchronized void updateScene(int width, int height, long frameNum) {
         for (Sprite sprite : sprites) {
@@ -116,6 +128,7 @@ class Model {
             Enemy enemy = iE.next();
             enemy.updateState(width, height, frameNum);
             if (shouldRemoveEnemy(enemy, height)) {
+                adoptBulletsFromDeadEnemy(enemy);
                 iE.remove();
             }
         }
