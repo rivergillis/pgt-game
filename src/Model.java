@@ -18,6 +18,10 @@ class Model {
     private Prompt instructions;
     private Prompt deathPrompt;
 
+    private Boss1 bossLeft;
+    private Boss2 bossMid;
+    private Boss3 bossRight;
+
     private int points = 0;
 
     Model() throws IOException {
@@ -26,17 +30,19 @@ class Model {
             playerBullets = new ArrayList<Bullet>();
             enemies = new ArrayList<Enemy>();
             deadEnemyBullets = new ArrayList<Bullet>();
+
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
+
             this.instructions = new Prompt(false, false);
             this.deathPrompt = new Prompt(true, true);
             sprites.add(instructions);
+
+            bossLeft = new Boss1();
+            bossMid = new Boss2();
+            bossRight = new Boss3();
         }
-    }
-
-
-    public void initialize() {
     }
 
     // This method is called every time the view is repainted.
@@ -57,6 +63,16 @@ class Model {
             for (Sprite bullet : deadEnemyBullets) {
                 bullet.updateImage(g);
             }
+
+            if (bossLeft.isAlive()) {
+                bossLeft.updateImage(g);
+            }
+            if (bossMid.isAlive()) {
+                bossMid.updateImage(g);
+            }
+            if (bossRight.isAlive()) {
+                bossRight.updateImage(g);
+            }
         }
     }
 
@@ -69,9 +85,8 @@ class Model {
             if (this.deathPrompt.remove(e)) {
                 sprites.remove(deathPrompt);
             }
-        } else {
-            playerShip.setMovement(e, isPress);
         }
+        playerShip.setMovement(e, isPress);
     }
 
     public void killPlayerAndReset() {
@@ -155,6 +170,6 @@ class Model {
             killPlayerAndReset();
             return;
         }
-        spawner.update(width, frameNum);
+        spawner.update(width, frameNum, this.points);
     }
 }

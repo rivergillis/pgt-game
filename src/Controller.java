@@ -51,7 +51,7 @@ class Controller implements MouseListener, KeyListener
         } else if (key == KeyEvent.VK_N) {
             //System.out.println("Robbers Captured: " + RobberCar.numCaptured + "\tRobbers Escaped: " + RobberCar.numEscaped);
         } else if (key == KeyEvent.VK_R) {
-            model.initialize();
+            //model.initialize();
             view.repaint();
         }
     }

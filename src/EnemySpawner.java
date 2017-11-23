@@ -11,8 +11,13 @@ public class EnemySpawner {
     // Two enemies spawned every DOUBLE_ENEMY_FRAME
     private static final int DOUBLE_ENEMY_FRAME = 60 * 7;
 
+    // The score at which point the boss appears
+    private static final int BOSS_SCORE = 200;
+
     private ArrayList<Enemy> enemies;
     private Random rng;
+
+    private boolean spawnedBoss = false;
 
     public EnemySpawner(ArrayList<Enemy> enemies) {
         this.enemies = enemies;
@@ -30,12 +35,26 @@ public class EnemySpawner {
         enemies.add(e);
     }
 
-    public void update(int width, long frameNum) {
-        if (frameNum % DOUBLE_ENEMY_FRAME == 0) {
+    public void spawnBoss() {
+        System.out.println("Spawn boss");
+    }
+
+    public void update(int width, long frameNum, int score) {
+        if (score >= BOSS_SCORE) {
+            if (!spawnedBoss) {
+                spawnBoss();
+                spawnedBoss = true;
+            }
+            return;
+        }
+        else if (frameNum % DOUBLE_ENEMY_FRAME == 0) {
             spawnEnemy(width);
             spawnEnemy(width);
         } else if (frameNum % ENEMY_FRAME == 0) {
             spawnEnemy(width);
         }
+
+        // to handle death during boss fight
+        spawnedBoss = false;
     }
 }
