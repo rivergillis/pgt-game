@@ -15,6 +15,9 @@ class Model {
 
     private EnemySpawner spawner;
 
+    private Prompt instructions;
+    private Prompt deathPrompt;
+
     Model() throws IOException {
         synchronized (this) {
             sprites = new ArrayList<Sprite>();
@@ -24,6 +27,9 @@ class Model {
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
+            this.instructions = new Prompt(false, false);
+            this.deathPrompt = new Prompt(true, true);
+            sprites.add(instructions);
         }
     }
 
@@ -53,7 +59,13 @@ class Model {
     }
 
     public void movePlayer(KeyEvent e, boolean isPress) {
-        playerShip.setMovement(e, isPress);
+        if (!this.instructions.isRemoved()) {
+            if (this.instructions.remove(e)) {
+                sprites.remove(instructions);
+            }
+        } else {
+            playerShip.setMovement(e, isPress);
+        }
     }
 
     public void killPlayerAndReset() {
@@ -107,6 +119,7 @@ class Model {
 
     // This method is called every frame and should updateState() for every sprite
     public synchronized void updateScene(int width, int height, long frameNum) {
+        if (!this.instructions.isRemoved()) { return; }
         for (Sprite sprite : sprites) {
             sprite.updateState(width, height, frameNum);
         }

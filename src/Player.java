@@ -18,7 +18,6 @@ public class Player extends GameObject {
     public static final long BULLET_FRAME = 20;
 
     // another name: isHeld
-    // idea: make this ternary (0, focused, normal)
     private HashMap<Integer, Boolean> wasLastPressed;
 
     // List of all Bullets we make
@@ -33,6 +32,7 @@ public class Player extends GameObject {
         wasLastPressed.put(PLAYER_LEFT, false);
         wasLastPressed.put(PLAYER_RIGHT, false);
         wasLastPressed.put(PLAYER_FOCUS, false);
+        wasLastPressed.put(PLAYER_BOMB, false);
         this.bullets = playerBullets;
         super.setX(200 - 32);
         super.setY(650);
