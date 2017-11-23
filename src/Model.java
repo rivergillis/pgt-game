@@ -110,28 +110,43 @@ class Model {
         deadEnemyBullets.addAll(enemyBullets);
     }
 
-    // This method is called every frame and should updateState() for every sprite
-    public synchronized void updateScene(int width, int height, long frameNum) {
-        for (Sprite sprite : sprites) {
-            sprite.updateState(width, height, frameNum);
-        }
-        Iterator<Bullet> i = playerBullets.iterator();
+    // if enemyBullets, updateBullets will return true if a bullet hit the player
+    public boolean updateBullets(ArrayList<Bullet> bullets, boolean enemyBullets, int width, int height, long frameNum) {
+        Iterator<Bullet> i = bullets.iterator();
         while (i.hasNext()) {
             Bullet b = i.next();
             b.updateState(width, height, frameNum);
             if (b.exitedScreen(width, height, 20)) {
                 i.remove();
+            } else if (enemyBullets) {
+                if (b.overlaps(playerShip.getHeart())) {
+                    System.out.println("Player died");
+                    //return true;
+                }
             }
         }
+        return false;
+    }
+
+    // This method is called every frame and should updateState() for every sprite
+    public synchronized void updateScene(int width, int height, long frameNum) {
+        for (Sprite sprite : sprites) {
+            sprite.updateState(width, height, frameNum);
+        }
+        updateBullets(playerBullets, false, width, height, frameNum);
+
         Iterator<Enemy> iE = enemies.iterator();
         while (iE.hasNext()) {
             Enemy enemy = iE.next();
             enemy.updateState(width, height, frameNum);
+            updateBullets(enemy.getBullets(), true, width, height, frameNum);
+
             if (shouldRemoveEnemy(enemy, height)) {
                 adoptBulletsFromDeadEnemy(enemy);
                 iE.remove();
             }
         }
+        updateBullets(deadEnemyBullets, true, width, height, frameNum);
         spawner.update(width, frameNum);
         /*synchronized (this) {
             for (Sprite sprite : sprites) {

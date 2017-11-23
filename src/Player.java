@@ -57,6 +57,10 @@ public class Player extends GameObject {
         }
     }
 
+    public HitBox getHeart() {
+        return new HitBox(0,0,0,0);
+    }
+
     public boolean isFocus() {
         return wasLastPressed.get(PLAYER_FOCUS);
     }

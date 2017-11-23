@@ -56,16 +56,24 @@ class Sprite
         }
     }
 
+    public HitBox getHitBox() {
+        return new HitBox(getX(), getY(), getWidth(), getHeight());
+    }
+
     public Boolean overlaps(Sprite s) {
+        return overlaps(s.getHitBox());
+    }
+
+    public Boolean overlaps(HitBox h) {
         int leftA = this.getX();
         int rightA = this.getX() + this.getWidth();
         int topA = this.getY();
         int bottomA = this.getY() + this.getHeight();
 
-        int leftB = s.getX();
-        int rightB = s.getX() + s.getWidth();
-        int topB = s.getY();
-        int bottomB = s.getY() + s.getHeight();
+        int leftB = h.getX();
+        int rightB = h.getX() + h.getWidth();
+        int topB = h.getY();
+        int bottomB = h.getY() + h.getHeight();
 
         // check if sides of a are outside of b
         if (bottomA <= topB) {
