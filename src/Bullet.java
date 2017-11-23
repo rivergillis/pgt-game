@@ -11,8 +11,11 @@ public class Bullet extends GameObject {
 
     private int angle;
 
-    public Bullet(int angle, int x, int y) {
-        super("assets/16x32-placeholder.png");
+    public Bullet(int angle, int x, int y, boolean enemy) {
+        super("assets/16x32-placeholder-red.png");
+        if (!enemy) {
+            super.setImage("assets/16x32-placeholder.png");
+        }
         this.setAngle(angle);
         super.setX(x);
         super.setY(y);

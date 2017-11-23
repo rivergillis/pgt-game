@@ -79,6 +79,25 @@ class Model {
         }*/
     }
 
+    public boolean shouldRemoveEnemy(Enemy enemy, int height) {
+        if (enemy.getY() > (height + 20)) {
+            return true;
+        }
+        // check collisions with every bullet
+        Iterator<Bullet> iB = playerBullets.iterator();
+        while (iB.hasNext()) {
+            Bullet b = iB.next();
+            if (b.overlaps(enemy)) {
+                enemy.hit();
+                iB.remove();
+                if (enemy.isDead()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     // This method is called every frame and should updateState() for every sprite
     public synchronized void updateScene(int width, int height, long frameNum) {
         for (Sprite sprite : sprites) {
@@ -96,21 +115,8 @@ class Model {
         while (iE.hasNext()) {
             Enemy enemy = iE.next();
             enemy.updateState(width, height, frameNum);
-            if (enemy.getY() > (height + 20)) {
+            if (shouldRemoveEnemy(enemy, height)) {
                 iE.remove();
-            } else {
-                // check collisions with every bullet
-                Iterator<Bullet> iB = playerBullets.iterator();
-                while (iB.hasNext()) {
-                    Bullet b = iB.next();
-                    if (b.overlaps(enemy)) {
-                        enemy.hit();
-                        iB.remove();
-                        if (enemy.isDead()) {
-                            iE.remove();
-                        }
-                    }
-                }
             }
         }
         spawner.update(width, frameNum);

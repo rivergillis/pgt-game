@@ -96,9 +96,9 @@ public class Player extends GameObject {
 
     public void spawnBullets() {
         //System.out.println("Spawn bullets!");
-        Bullet b1 = new Bullet(360-105, super.getX(), super.getY());
-        Bullet b3 = new Bullet(360-90, super.getX() + (super.getHeight() / 2), super.getY() - 10);
-        Bullet b2 = new Bullet(360-75, super.getX() + super.getWidth(), super.getY());
+        Bullet b1 = new Bullet(360-105, super.getX(), super.getY(), false);
+        Bullet b3 = new Bullet(360-90, super.getX() + (super.getHeight() / 2), super.getY() - 10, false);
+        Bullet b2 = new Bullet(360-75, super.getX() + super.getWidth(), super.getY(), false);
         bullets.add(b1);
         bullets.add(b2);
         bullets.add(b3);
