@@ -112,7 +112,7 @@ class Model {
         if (!won) {
             System.out.println("Died with " + points + " points");
         } else {
-            System.out.println("Won the game with " + points + " points");
+            System.out.println("Won the game with " + points + 5000 + " points");
         }
         this.points = 0;
         deathPrompt.unRemove();
