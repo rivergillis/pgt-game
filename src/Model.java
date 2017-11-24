@@ -24,6 +24,8 @@ class Model {
     private Boss2 bossMid;
     private Boss3 bossRight;
 
+    private ScrollBg bg;
+
     private int points = 0;
 
     Model() throws IOException {
@@ -35,6 +37,8 @@ class Model {
             bossBullets = new ArrayList<Bullet>();
 
             playerShip = new Player(playerBullets);
+            bg = new ScrollBg();
+            sprites.add(bg);
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
 
@@ -102,6 +106,7 @@ class Model {
 
     public void killPlayerAndReset(boolean won) {
         sprites.clear();
+        sprites.add(bg);
         sprites.add(playerShip);
 
         playerBullets.clear();
@@ -112,7 +117,7 @@ class Model {
         if (!won) {
             System.out.println("Died with " + points + " points");
         } else {
-            System.out.println("Won the game with " + points + 5000 + " points");
+            System.out.println("Won the game with " + (points + 5000) + " points");
         }
         this.points = 0;
         deathPrompt.unRemove();
