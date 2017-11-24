@@ -35,17 +35,14 @@ public class EnemySpawner {
         enemies.add(e);
     }
 
-    public void spawnBoss() {
-        System.out.println("Spawn boss");
-    }
-
-    public void update(int width, long frameNum, int score) {
+    // returns true if the boss needs to spawn
+    public boolean update(int width, long frameNum, int score) {
         if (score >= BOSS_SCORE) {
             if (!spawnedBoss) {
-                spawnBoss();
                 spawnedBoss = true;
+                return true;
             }
-            return;
+            return false;
         }
         else if (frameNum % DOUBLE_ENEMY_FRAME == 0) {
             spawnEnemy(width);
@@ -56,5 +53,7 @@ public class EnemySpawner {
 
         // to handle death during boss fight
         spawnedBoss = false;
+
+        return false;
     }
 }

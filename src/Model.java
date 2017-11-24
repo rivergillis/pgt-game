@@ -92,13 +92,19 @@ class Model {
     public void killPlayerAndReset() {
         sprites.clear();
         sprites.add(playerShip);
+
         playerBullets.clear();
         deadEnemyBullets.clear();
         enemies.clear();
+
         System.out.println("Died with " + points + " points");
         this.points = 0;
         deathPrompt.unRemove();
         sprites.add(deathPrompt);
+
+        bossLeft.resetToDeath();
+        bossMid.resetToDeath();
+        bossRight.resetToDeath();
     }
 
     public boolean shouldRemoveEnemy(Enemy enemy, int height) {
@@ -170,6 +176,24 @@ class Model {
             killPlayerAndReset();
             return;
         }
-        spawner.update(width, frameNum, this.points);
+        if (spawner.update(width, frameNum, this.points)) {
+            spawnBoss();
+        }
+        if (bossLeft.isAlive()) {
+            bossLeft.updateState(width, height, frameNum);
+        }
+        if (bossMid.isAlive()) {
+            bossMid.updateState(width, height, frameNum);
+        }
+        if (bossRight.isAlive()) {
+            bossRight.updateState(width, height, frameNum);
+        }
+    }
+
+    public void spawnBoss() {
+        System.out.println("Spawn boss");
+        bossLeft.reset();
+        bossMid.reset();
+        bossRight.reset();
     }
 }
