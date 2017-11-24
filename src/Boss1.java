@@ -1,8 +1,12 @@
 public class Boss1 extends GameObject {
 
-    public static final int MAX_HP = 2000;
+    public static final int PLAYER_BULLET_DAMAGE = 20;
+
+    public static final int MAX_HP = 100;
 
     private int hp = 0;
+
+    private boolean hasBeenKilled = false;
 
     public Boss1() {
         super("assets/bossLeft.png");
@@ -23,6 +27,19 @@ public class Boss1 extends GameObject {
         super.setYVel(0);
         super.setY(-300);
         super.setX(0);
+        markUnkilled();
+    }
+
+    public void markKilled() {
+        this.hasBeenKilled = true;
+    }
+
+    public void markUnkilled() {
+        this.hasBeenKilled = false;
+    }
+
+    public boolean isKilled() {
+        return this.hasBeenKilled;
     }
 
     public boolean inPosition() {
@@ -30,6 +47,10 @@ public class Boss1 extends GameObject {
             return true;
         }
         return false;
+    }
+
+    public void damage() {
+        this.hp -= PLAYER_BULLET_DAMAGE;
     }
 
     @Override

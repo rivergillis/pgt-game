@@ -4,10 +4,12 @@ public class Prompt extends Sprite {
 
     private boolean hasRemoved;
 
-    public Prompt(boolean hasRemoved, boolean isDeath) {
+    public Prompt(boolean hasRemoved, boolean isDeath, boolean isVictory) {
         super("assets/instructions.png");
         if (isDeath) {
             super.setImage("assets/dead.png");
+        } else if (isVictory) {
+            super.setImage("assets/victory.png");
         }
         this.hasRemoved = hasRemoved;
     }
@@ -25,6 +27,10 @@ public class Prompt extends Sprite {
             return true;
         }
         return false;
+    }
+
+    public void forceRemove() {
+        this.hasRemoved = true;
     }
 
     public void unRemove() {

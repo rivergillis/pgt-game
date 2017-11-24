@@ -17,6 +17,7 @@ class Model {
 
     private Prompt instructions;
     private Prompt deathPrompt;
+    private Prompt victoryPrompt;
 
     private Boss1 bossLeft;
     private Boss2 bossMid;
@@ -35,8 +36,9 @@ class Model {
             sprites.add(playerShip);
             spawner = new EnemySpawner(enemies);
 
-            this.instructions = new Prompt(false, false);
-            this.deathPrompt = new Prompt(true, true);
+            this.instructions = new Prompt(false, false, false);
+            this.deathPrompt = new Prompt(true, true, false);
+            this.victoryPrompt = new Prompt(true, false, true);
             sprites.add(instructions);
 
             bossLeft = new Boss1();
@@ -85,11 +87,15 @@ class Model {
             if (this.deathPrompt.remove(e)) {
                 sprites.remove(deathPrompt);
             }
+        } else if (!this.victoryPrompt.isRemoved()) {
+            if (this.victoryPrompt.remove(e)) {
+                sprites.remove(victoryPrompt);
+            }
         }
         playerShip.setMovement(e, isPress);
     }
 
-    public void killPlayerAndReset() {
+    public void killPlayerAndReset(boolean won) {
         sprites.clear();
         sprites.add(playerShip);
 
@@ -97,7 +103,11 @@ class Model {
         deadEnemyBullets.clear();
         enemies.clear();
 
-        System.out.println("Died with " + points + " points");
+        if (!won) {
+            System.out.println("Died with " + points + " points");
+        } else {
+            System.out.println("Won the game with " + points + " points");
+        }
         this.points = 0;
         deathPrompt.unRemove();
         sprites.add(deathPrompt);
@@ -127,6 +137,45 @@ class Model {
         return false;
     }
 
+    public void winGame() {
+        killPlayerAndReset(true);
+        deathPrompt.forceRemove();
+        sprites.remove(deathPrompt);
+        victoryPrompt.unRemove();
+        sprites.add(victoryPrompt);
+    }
+
+    public void damageBoss() {
+        // check collisions with every bullet
+        Iterator<Bullet> iB = playerBullets.iterator();
+        while (iB.hasNext()) {
+            Bullet b = iB.next();
+            if (b.overlaps(bossLeft)) {
+                bossLeft.damage();
+                iB.remove();
+                if (!bossLeft.isAlive()) {
+                    bossLeft.markKilled();
+                }
+            } else if (b.overlaps(bossMid)) {
+                bossMid.damage();
+                iB.remove();
+                if (!bossMid.isAlive()) {
+                    bossMid.markKilled();
+                }
+            } else if (b.overlaps(bossRight)) {
+                bossRight.damage();
+                iB.remove();
+                if (!bossRight.isAlive()) {
+                    bossRight.markKilled();
+                }
+            }
+        }
+
+        if (bossLeft.isKilled() && bossMid.isKilled() && bossRight.isKilled()) {
+            winGame();
+        }
+    }
+
     private void adoptBulletsFromDeadEnemy(Enemy enemy) {
         ArrayList<Bullet> enemyBullets = enemy.getBullets();
         deadEnemyBullets.addAll(enemyBullets);
@@ -153,6 +202,7 @@ class Model {
     public synchronized void updateScene(int width, int height, long frameNum) {
         if (!this.instructions.isRemoved()) { return; }
         if (!this.deathPrompt.isRemoved()) { return; }
+        if (!this.victoryPrompt.isRemoved()) { return; }
         for (Sprite sprite : sprites) {
             sprite.updateState(width, height, frameNum);
         }
@@ -163,7 +213,7 @@ class Model {
             Enemy enemy = iE.next();
             enemy.updateState(width, height, frameNum);
             if (updateBullets(enemy.getBullets(), true, width, height, frameNum)) {
-                killPlayerAndReset();
+                killPlayerAndReset(false);
                 return;
             }
 
@@ -173,12 +223,15 @@ class Model {
             }
         }
         if (updateBullets(deadEnemyBullets, true, width, height, frameNum)) {
-            killPlayerAndReset();
+            killPlayerAndReset(false);
             return;
         }
         if (spawner.update(width, frameNum, this.points)) {
             spawnBoss();
         }
+
+        damageBoss();
+
         if (bossLeft.isAlive()) {
             bossLeft.updateState(width, height, frameNum);
         }
