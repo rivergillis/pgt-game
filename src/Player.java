@@ -34,6 +34,10 @@ public class Player extends GameObject {
         wasLastPressed.put(PLAYER_FOCUS, false);
         wasLastPressed.put(PLAYER_BOMB, false);
         this.bullets = playerBullets;
+        resetPos();
+    }
+
+    public void resetPos() {
         super.setX(200 - 32);
         super.setY(650);
     }

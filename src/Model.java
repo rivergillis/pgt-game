@@ -9,6 +9,7 @@ class Model {
     private ArrayList<Sprite> sprites;
     private ArrayList<Bullet> playerBullets;
     private ArrayList<Bullet> deadEnemyBullets;
+    private ArrayList<Bullet> bossBullets;
 
     private ArrayList<Enemy> enemies;
     private Player playerShip;
@@ -31,6 +32,7 @@ class Model {
             playerBullets = new ArrayList<Bullet>();
             enemies = new ArrayList<Enemy>();
             deadEnemyBullets = new ArrayList<Bullet>();
+            bossBullets = new ArrayList<Bullet>();
 
             playerShip = new Player(playerBullets);
             sprites.add(playerShip);
@@ -41,9 +43,9 @@ class Model {
             this.victoryPrompt = new Prompt(true, false, true);
             sprites.add(instructions);
 
-            bossLeft = new Boss1();
-            bossMid = new Boss2();
-            bossRight = new Boss3();
+            bossLeft = new Boss1(bossBullets);
+            bossMid = new Boss2(bossBullets);
+            bossRight = new Boss3(bossBullets);
         }
     }
 
@@ -63,6 +65,9 @@ class Model {
                 }
             }
             for (Sprite bullet : deadEnemyBullets) {
+                bullet.updateImage(g);
+            }
+            for (Sprite bullet : bossBullets) {
                 bullet.updateImage(g);
             }
 
@@ -101,6 +106,7 @@ class Model {
 
         playerBullets.clear();
         deadEnemyBullets.clear();
+        bossBullets.clear();
         enemies.clear();
 
         if (!won) {
@@ -115,6 +121,8 @@ class Model {
         bossLeft.resetToDeath();
         bossMid.resetToDeath();
         bossRight.resetToDeath();
+
+        playerShip.resetPos();
     }
 
     public boolean shouldRemoveEnemy(Enemy enemy, int height) {
@@ -223,6 +231,10 @@ class Model {
             }
         }
         if (updateBullets(deadEnemyBullets, true, width, height, frameNum)) {
+            killPlayerAndReset(false);
+            return;
+        }
+        if (updateBullets(bossBullets, true, width, height, frameNum)) {
             killPlayerAndReset(false);
             return;
         }

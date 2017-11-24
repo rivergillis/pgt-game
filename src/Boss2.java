@@ -1,17 +1,22 @@
+import java.util.ArrayList;
+
 public class Boss2 extends GameObject {
 
     public static final int PLAYER_BULLET_DAMAGE = 20;
-
-    public static final int MAX_HP = 100;
+    public static final long BULLET_FRAME = 30;
+    public static final int MAX_HP = 1000;
 
     private int hp = 0;
 
     private boolean hasBeenKilled = false;
 
-    public Boss2() {
+    private ArrayList<Bullet> bullets;
+
+    public Boss2(ArrayList<Bullet> bullets) {
         super("assets/bossMid.png");
         super.setX(100);
         super.setY(-300);
+        this.bullets = bullets;
     }
 
     public boolean isAlive() {
@@ -54,10 +59,23 @@ public class Boss2 extends GameObject {
         return this.hasBeenKilled;
     }
 
+    public void spawnBullets() {
+        Bullet b1 = new Bullet(105, super.getX(), super.getY() + super.getHeight(), true);
+        Bullet b3 = new Bullet(90, super.getX() + (super.getWidth() / 2), (super.getY()) + super.getHeight(), true);
+        Bullet b2 = new Bullet(75, super.getX() + super.getWidth(), super.getY() + super.getHeight(), true);
+        bullets.add(b1);
+        bullets.add(b2);
+        bullets.add(b3);
+    }
+
     @Override
     public void updateState(int width, int height, long frameNum) {
         if (this.inPosition()) {
             super.setYVel(0);
+
+            if (frameNum % BULLET_FRAME == 0) {
+                spawnBullets();
+            }
         }
         super.updateState(width, height, frameNum);
     }

@@ -12,7 +12,7 @@ public class EnemySpawner {
     private static final int DOUBLE_ENEMY_FRAME = 60 * 7;
 
     // The score at which point the boss appears
-    private static final int BOSS_SCORE = 200;
+    private static final int BOSS_SCORE = 0;
 
     private ArrayList<Enemy> enemies;
     private Random rng;
