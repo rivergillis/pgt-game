@@ -1,6 +1,8 @@
 public class HitBox {
     private int x, y, width, height;
 
+    // HitBoxes are used for collision detection
+
     public HitBox(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;

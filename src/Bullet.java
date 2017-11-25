@@ -14,9 +14,9 @@ public class Bullet extends GameObject {
     private boolean enemy;
 
     public Bullet(int angle, int x, int y, boolean enemy) {
-        super("assets/16x32-placeholder-red.png");
+        super("assets/16x32-bullet-red.png");
         if (!enemy) {
-            super.setImage("assets/16x32-placeholder.png");
+            super.setImage("assets/16x32-bullet-blue.png");
         }
         this.enemy = enemy;
         this.setAngle(angle);
@@ -34,11 +34,6 @@ public class Bullet extends GameObject {
         } else {
             bulletSpeed = BULLET_SPEED;
         }
-        /*System.out.print("cos of " + angle + " " + Math.toRadians(Math.cos(angle)));
-        System.out.println(" rounded")
-        System.out.println("xvel: " + BULLET_SPEED * Math.cos(angle));
-        System.out.print("Rounded: " + Math.round(BULLET_SPEED * Math.cos(angle)));
-        System.out.println(" Int'd: " + (int)Math.round(BULLET_SPEED * Math.cos(angle)));*/
         super.setXVel((int)Math.round(bulletSpeed * Math.cos(radAngle)));
         super.setYVel((int)Math.round(bulletSpeed * Math.sin(radAngle)));
     }
@@ -47,34 +42,4 @@ public class Bullet extends GameObject {
     public void updateState(int width, int height, long frameNum) {
         super.updateState(width, height, frameNum);
     }
-
-    // image rotation stuff, maybe implement later
-    /*
-    @Override
-    public void updateImage(Graphics g) {
-        Graphics2D g2d = (Graphics2D)g;
-        AffineTransform trans = new AffineTransform();
-        trans.rotate(Math.toRadians(angle));
-        trans.translate(super.getX(), super.getY());
-        g2d.drawImage(super.getImage(), trans, null);
-    }
-
-    public static BufferedImage toBufferedImage(Image img)
-    {
-        if (img instanceof BufferedImage)
-        {
-            return (BufferedImage) img;
-        }
-
-        // Create a buffered image with transparency
-        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
-        // Draw the image on to the buffered image
-        Graphics2D bGr = bimage.createGraphics();
-        bGr.drawImage(img, 0, 0, null);
-        bGr.dispose();
-
-        // Return the buffered image
-        return bimage;
-    }*/
 }

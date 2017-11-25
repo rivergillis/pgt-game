@@ -6,8 +6,10 @@ import java.util.Iterator;
 
 
 class Model {
+    // Holds everything we render
     private ArrayList<Sprite> sprites;
     private ArrayList<Bullet> playerBullets;
+    // Dead enemy bullets get adopted from enemies when they die
     private ArrayList<Bullet> deadEnemyBullets;
     private ArrayList<Bullet> bossBullets;
 
@@ -24,6 +26,7 @@ class Model {
     private Boss2 bossMid;
     private Boss3 bossRight;
 
+    // The scrolling background image
     private ScrollBg bg;
 
     private int points = 0;
@@ -59,6 +62,10 @@ class Model {
             for (Sprite sprite : sprites) {
                 sprite.updateImage(g);
             }
+            if (!instructions.isRemoved() || !deathPrompt.isRemoved() || !victoryPrompt.isRemoved()) {
+                return;
+            }
+
             for (Sprite bullet : playerBullets) {
                 bullet.updateImage(g);
             }
@@ -100,11 +107,17 @@ class Model {
             if (this.victoryPrompt.remove(e)) {
                 sprites.remove(victoryPrompt);
             }
+        } else if (e.getKeyCode() == Player.PLAYER_PAUSE) {
+            if (this.instructions.isRemoved()) {
+                this.instructions.unRemove();
+                sprites.add(instructions);
+            }
         }
         playerShip.setMovement(e, isPress);
     }
 
     public void killPlayerAndReset(boolean won) {
+        // Pretty much just resets our ArrayLists and the player's position and score
         sprites.clear();
         sprites.add(bg);
         sprites.add(playerShip);
@@ -130,7 +143,9 @@ class Model {
         playerShip.resetPos();
     }
 
-    public boolean shouldRemoveEnemy(Enemy enemy, int height) {
+    // Damages enemies if they get hit by any bullets
+    // Returns true if the enemy should be removed
+    public boolean shouldRemoveEnemy(Enemy enemy, int height, long frameNum) {
         if (enemy.getY() > (height + 20)) {
             return true;
         }
@@ -139,7 +154,7 @@ class Model {
         while (iB.hasNext()) {
             Bullet b = iB.next();
             if (b.overlaps(enemy)) {
-                enemy.hit();
+                enemy.hit(frameNum);
                 iB.remove();
                 if (enemy.isDead()) {
                     points += Enemy.ENEMY_POINTS;
@@ -150,6 +165,7 @@ class Model {
         return false;
     }
 
+    // Resets everything as if the player had died, but with a different prompt.
     public void winGame() {
         killPlayerAndReset(true);
         deathPrompt.forceRemove();
@@ -158,25 +174,26 @@ class Model {
         sprites.add(victoryPrompt);
     }
 
-    public void damageBoss() {
+    // Checks boss collisions, wins the game if needed
+    public void damageBoss(long frameNum) {
         // check collisions with every bullet
         Iterator<Bullet> iB = playerBullets.iterator();
         while (iB.hasNext()) {
             Bullet b = iB.next();
             if (b.overlaps(bossLeft)) {
-                bossLeft.damage();
+                bossLeft.damage(frameNum);
                 iB.remove();
                 if (!bossLeft.isAlive()) {
                     bossLeft.markKilled();
                 }
             } else if (b.overlaps(bossMid)) {
-                bossMid.damage();
+                bossMid.damage(frameNum);
                 iB.remove();
                 if (!bossMid.isAlive()) {
                     bossMid.markKilled();
                 }
             } else if (b.overlaps(bossRight)) {
-                bossRight.damage();
+                bossRight.damage(frameNum);
                 iB.remove();
                 if (!bossRight.isAlive()) {
                     bossRight.markKilled();
@@ -189,6 +206,7 @@ class Model {
         }
     }
 
+    // Pulls out bullets from dead enemies
     private void adoptBulletsFromDeadEnemy(Enemy enemy) {
         ArrayList<Bullet> enemyBullets = enemy.getBullets();
         deadEnemyBullets.addAll(enemyBullets);
@@ -213,6 +231,7 @@ class Model {
 
     // This method is called every frame and should updateState() for every sprite
     public synchronized void updateScene(int width, int height, long frameNum) {
+        // Active prompts will pause the game
         if (!this.instructions.isRemoved()) { return; }
         if (!this.deathPrompt.isRemoved()) { return; }
         if (!this.victoryPrompt.isRemoved()) { return; }
@@ -230,7 +249,7 @@ class Model {
                 return;
             }
 
-            if (shouldRemoveEnemy(enemy, height)) {
+            if (shouldRemoveEnemy(enemy, height, frameNum)) {
                 adoptBulletsFromDeadEnemy(enemy);
                 iE.remove();
             }
@@ -247,7 +266,7 @@ class Model {
             spawnBoss();
         }
 
-        damageBoss();
+        damageBoss(frameNum);
 
         if (bossLeft.isAlive()) {
             bossLeft.updateState(width, height, frameNum);
@@ -261,9 +280,12 @@ class Model {
     }
 
     public void spawnBoss() {
-        System.out.println("Spawn boss");
         bossLeft.reset();
         bossMid.reset();
         bossRight.reset();
+        for (Enemy e : enemies) {
+            adoptBulletsFromDeadEnemy(e);
+        }
+        enemies.clear();
     }
 }

@@ -40,7 +40,6 @@ class Sprite
         return getImage().getWidth(null);
     }
 
-    // Called every time the view is repainted, really no reason to override this
     public void updateImage(Graphics g) {
         Image i = getImage();
         g.drawImage(i, getX(), getY(), getWidth(), getHeight(), null);

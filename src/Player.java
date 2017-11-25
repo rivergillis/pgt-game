@@ -8,14 +8,16 @@ public class Player extends GameObject {
     public static final int PLAYER_LEFT     = KeyEvent.VK_LEFT;
     public static final int PLAYER_RIGHT    = KeyEvent.VK_RIGHT;
     public static final int PLAYER_FOCUS    = KeyEvent.VK_SHIFT;
+    // Bombs never got implemented :(
     public static final int PLAYER_BOMB     = KeyEvent.VK_Z;
+    public static final int PLAYER_PAUSE    = KeyEvent.VK_P;
 
     public static final int MOVESPEED_NORMAL = 5;
     public static final int MOVESPEED_FOCUS = 3;
 
     // Bullets spawned every BULLET_FRAME frames
     // Game runs at about 62 frames per second
-    public static final long BULLET_FRAME = 20;
+    public static final long BULLET_FRAME = 13;
 
     // another name: isHeld
     private HashMap<Integer, Boolean> wasLastPressed;
@@ -25,7 +27,7 @@ public class Player extends GameObject {
 
 
     Player(ArrayList<Bullet> playerBullets) {
-        super("assets/64-placeholder.png");
+        super("assets/64-player-final.png");
         wasLastPressed = new HashMap<Integer, Boolean>();
         wasLastPressed.put(PLAYER_UP, false);
         wasLastPressed.put(PLAYER_DOWN, false);
@@ -33,6 +35,7 @@ public class Player extends GameObject {
         wasLastPressed.put(PLAYER_RIGHT, false);
         wasLastPressed.put(PLAYER_FOCUS, false);
         wasLastPressed.put(PLAYER_BOMB, false);
+        wasLastPressed.put(PLAYER_PAUSE, false);
         this.bullets = playerBullets;
         resetPos();
     }
@@ -56,11 +59,14 @@ public class Player extends GameObject {
             return true;
         } else if (k == PLAYER_BOMB) {
             return true;
+        } else if (k == PLAYER_PAUSE) {
+            return true;
         } else {
             return false;
         }
     }
 
+    // Returns a hitbox for the player ship's core
     public HitBox getHeart() {
         HitBox h = new HitBox((this.getX() + 28), this.getY() + 28,8,8);
         return h;
@@ -93,9 +99,9 @@ public class Player extends GameObject {
             newYVel += changeAmount;
         } else if (k == Player.PLAYER_FOCUS) {
             if (isPress) {
-                super.setImage("assets/64-placeholder-heart.png");
+                super.setImage("assets/64-player-final-heart.png");
             } else {
-                super.setImage("assets/64-placeholder.png");
+                super.setImage("assets/64-player-final.png");
             }
         }
 

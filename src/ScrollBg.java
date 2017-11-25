@@ -4,15 +4,18 @@ import java.awt.image.BufferedImage;
 public class ScrollBg extends Sprite {
     private BufferedImage bImage;
 
-    private int scrollX = 0;
+    private int scrollX = 800;
+
+    // ScrollBgs are sprites larger than the size of the game, that scroll
+    // vertically every frame.
 
     public ScrollBg() {
         super("assets/bg.png");
         this.bImage = toBufferedImage(this.getImage());
     }
 
-    public static BufferedImage toBufferedImage(Image img)
-    {
+    // Have to use a buffered image to scroll it
+    public static BufferedImage toBufferedImage(Image img) {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
@@ -37,9 +40,9 @@ public class ScrollBg extends Sprite {
 
     @Override
     public void updateState(int width, int height, long frameNum) {
-        this.scrollX += 1;
-        if (this.scrollX >= 800) {
-            this.scrollX = 0;
+        this.scrollX -= 1;
+        if (this.scrollX <= 0) {
+            this.scrollX = 800;
         }
     }
 }

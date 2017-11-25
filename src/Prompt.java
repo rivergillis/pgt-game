@@ -2,6 +2,8 @@ import java.awt.event.KeyEvent;
 
 public class Prompt extends Sprite {
 
+    // Prompts are screen-sized sprites that are used to display information
+    // and halt game progress until they are removed
     private boolean hasRemoved;
 
     public Prompt(boolean hasRemoved, boolean isDeath, boolean isVictory) {

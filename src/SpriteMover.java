@@ -1,4 +1,10 @@
 public class SpriteMover implements Runnable {
+
+    // SpriteMover is the background thread that handles updating the game logic
+    // in a timely fashion. It is set to try to update the logic as close to
+    // 60 frames per second as possible, but do to lack of precision with
+    // Thread.sleep(), often accomplishes about 62 fps.
+
     Model model;
     View view;
     public double perfectFrameTime = (1.0 / 60.0) * 1000;
@@ -10,11 +16,11 @@ public class SpriteMover implements Runnable {
 
     @Override
     public void run() {
+        // frameNumber is the total number of elapsed frames since the game started
         long frameNumber = -1L;
         long startTime = 0L;
         double elapsedTime = 0.0;
         long timeToWait = 0L;
-        //System.out.println("Perfect frame time: " + perfectFrameTime);
         while (true) {
             frameNumber++;
             startTime = System.nanoTime();

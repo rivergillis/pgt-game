@@ -14,11 +14,16 @@ public class Enemy extends GameObject {
 
     private ArrayList<Bullet> bullets;
 
-    // health
     private int hp;
 
+    // the frame at which to return to the normal image
+    private long frameAfterHit = 0;
+
+    // true if the non-hit image is set
+    private boolean normalImage = true;
+
     public Enemy() {
-        super("assets/64-placeholder-red.png");
+        super("assets/64-enemy-final-rotated.png");
         this.hp = MAX_HP;
         bullets = new ArrayList<Bullet>();
     }
@@ -27,8 +32,11 @@ public class Enemy extends GameObject {
         return hp <= 0;
     }
 
-    public void hit() {
+    public void hit(long frameNum) {
         this.hp -= PLAYER_BULLET_DAMAGE;
+        super.setImage("assets/64-enemy-final-rotated-hit.png");
+        this.frameAfterHit = frameNum + 10;
+        this.normalImage = false;
     }
 
     public ArrayList<Bullet> getBullets() {
@@ -48,6 +56,10 @@ public class Enemy extends GameObject {
     public void updateState(int width, int height, long frameNum) {
         if (frameNum % BULLET_FRAME == 0) {
             spawnBullets();
+        }
+        if (!normalImage && frameNum >= frameAfterHit) {
+            super.setImage("assets/64-enemy-final-rotated.png");
+            this.normalImage = true;
         }
         super.updateState(width, height, frameNum);
     }

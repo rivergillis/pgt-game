@@ -4,7 +4,7 @@ public class Boss2 extends GameObject {
 
     public static final int PLAYER_BULLET_DAMAGE = 20;
     public static final long BULLET_FRAME = 30;
-    public static final int MAX_HP = 3000;
+    public static final int MAX_HP = 1500;
 
     private int hp = 0;
 
@@ -14,6 +14,10 @@ public class Boss2 extends GameObject {
 
     // used to alternate bullet patterns
     private boolean alternate = true;
+
+    private long frameAfterHit = 0;
+
+    private boolean normalImage = true;
 
     public Boss2(ArrayList<Bullet> bullets) {
         super("assets/bossMid.png");
@@ -46,8 +50,11 @@ public class Boss2 extends GameObject {
         return false;
     }
 
-    public void damage() {
+    public void damage(long frameNum) {
         this.hp -= PLAYER_BULLET_DAMAGE;
+        super.setImage("assets/bossMid-hit.png");
+        this.frameAfterHit = frameNum + 10;
+        this.normalImage = false;
     }
 
     public void markKilled() {
@@ -91,6 +98,10 @@ public class Boss2 extends GameObject {
             if (frameNum % BULLET_FRAME == 0) {
                 spawnBullets();
             }
+        }
+        if (!normalImage && frameNum >= frameAfterHit) {
+            super.setImage("assets/bossMid.png");
+            this.normalImage = true;
         }
         super.updateState(width, height, frameNum);
     }
