@@ -7,29 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="38cd3440-c105-4e2c-ba8e-1d8867fad350" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/artifacts/game_jar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/bg.png" afterPath="$PROJECT_DIR$/src/assets/bg.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/bossLeft.png" afterPath="$PROJECT_DIR$/src/assets/bossLeft.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/bossMid.png" afterPath="$PROJECT_DIR$/src/assets/bossMid.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/bossRight.png" afterPath="$PROJECT_DIR$/src/assets/bossRight.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/dead.png" afterPath="$PROJECT_DIR$/src/assets/dead.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/instructions.png" afterPath="$PROJECT_DIR$/src/assets/instructions.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/assets/victory.png" afterPath="$PROJECT_DIR$/src/assets/victory.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Boss1.java" afterPath="$PROJECT_DIR$/src/Boss1.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Boss2.java" afterPath="$PROJECT_DIR$/src/Boss2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Boss3.java" afterPath="$PROJECT_DIR$/src/Boss3.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Bullet.java" afterPath="$PROJECT_DIR$/src/Bullet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Controller.java" afterPath="$PROJECT_DIR$/src/Controller.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Enemy.java" afterPath="$PROJECT_DIR$/src/Enemy.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/EnemySpawner.java" afterPath="$PROJECT_DIR$/src/EnemySpawner.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/HitBox.java" afterPath="$PROJECT_DIR$/src/HitBox.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Model.java" afterPath="$PROJECT_DIR$/src/Model.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Player.java" afterPath="$PROJECT_DIR$/src/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Prompt.java" afterPath="$PROJECT_DIR$/src/Prompt.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ScrollBg.java" afterPath="$PROJECT_DIR$/src/ScrollBg.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Sprite.java" afterPath="$PROJECT_DIR$/src/Sprite.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/SpriteMover.java" afterPath="$PROJECT_DIR$/src/SpriteMover.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/readme.txt" afterPath="" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -293,12 +271,12 @@
       <workItem from="1511477023021" duration="4062000" />
       <workItem from="1511489185740" duration="3679000" />
       <workItem from="1511545133200" duration="6146000" />
-      <workItem from="1511569159597" duration="2242000" />
+      <workItem from="1511569159597" duration="2571000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52117000" />
+    <option name="totallyTimeSpent" value="52446000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="100" y="187" width="1340" height="685" extended-state="0" />
